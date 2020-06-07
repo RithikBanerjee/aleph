@@ -1,18 +1,16 @@
 
-![Poster](/Assets/posters/IrisDetector.png)
+![Poster](/static/image/index.gif)
 
-# Iris Detector using OpenCV
+# Aleph - The Music Player
 
-&emsp;&emsp; [Iris Detector](/IrisDetector.py) is a python project which just needs Python 3.7.0 Shell to detect iris region from any non ideal iris image. And it needs one more module of python which is easily available online called OpenCV. OpenCV has made computer vision in python very simple and convinient for students like us. Click [here](/Documentation/Localization%20%26%20Segmentation%20of%20Non-ideal%20iris%20images.pdf) to get full documentation on the project. <br /> 
+&emsp;&emsp; Aleph is a python based django mp3 player which is a self maintaining player. The only thing needed is a server where it can keep all the songs (.mp3 files) and rest it maintains a json file which will order all songs on the basis of rate, genre, album, artist and track name. Needes a lot of improvement in terms of UI/UX and other logics when taken to large scale.<br /> 
 
 ## FAQ
 
 #### How to run the project?
-Install OpenCV 2.4 then open this .py file in your python Shell and press 'F5'.
+Install Django 3.0 then open the project in pycharm and type 'python manage.py runserver' in terminal.
 
 #### What's the minimum framework needed?
-Python 3.7 & OpenCV 2.4
+Python 3.7 & Django 3.0
 
-#### How to test the project?
-Add your eye images in [Demo Data](/DemoData) & run the project.
 
