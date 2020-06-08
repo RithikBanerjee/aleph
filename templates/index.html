@@ -1,0 +1,91 @@
+{% load static %}
+
+<html>
+<title>Home</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="{% static 'icon/favicon.jpg' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/common.css' %}" type="text/css">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/all.min.js' %}"></script>
+<script src="{% static 'js/common.js' %}"></script>
+
+<body class="home-background">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info  fixed-top">
+        <a class="navbar-brand ml-5 mr-5" href="/">Aleph</a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link ml-4" href="/topten">Top 10</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/tracks">Tracks</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/artists">Artists</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/albums">Albums</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/genres">Genres</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="https://rithikbanerjee.github.io/Responsive-Resume">About Aleph</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/contact">Contact Aleph</a></li>
+        </ul>
+        <div class="form-inline mr-5">
+            <input class="form-control btn-outline-dark rounded-pill mr-5" type="search" placeholder="Explore">
+        </div>
+        <button class="btn btn-outline-dark rounded-pill mr-5" onclick="location.href='/contribute'">Contribute</button>
+    </nav>
+
+<div class="container">
+  <div class="card border-0 shadow my-5 mx-5" style="background-color: rgba(245, 245, 245, 0.7);">
+    <div class="card-body">
+        <div class="alert bg-dark alert-dismissible collapse">
+            <button type="button" class="close text-light" data-dismiss="alert">&times;</button>
+            <span class="h5 font-weight-light text-light"></span>
+        </div>
+        <div class="p-5">
+          <h1 class="font-weight-light">Welcome to Aleph,</h1>
+          <p class="lead mb-2 font-weight-normal">Here you can explore your favourite songs!</p>
+        </div>
+    </div>
+  </div>
+  <div class="card border-0 shadow mx-5" style="background-color: rgba(245, 245, 245, 0.7);">
+    <div class="card-body p-5">
+        <div class="row w-100 mt-4"> </div>
+        <div class="row">
+            <input class="form-control rounded-pill mr-sm-2 w-75 shadow" name="value" type="search" placeholder="Explore tracks, albums or artists">
+            <button class="btn btn-dark rounded-pill my-2 my-sm-0 mr-auto shadow" name="search"><i class="fa fa-search"></i></button>
+            <button class="btn btn-dark rounded-pill my-2 my-sm-0 mr-auto shadow" onclick="location.href='/contribute'">Contribute</button>
+        </div>
+        <div class="row w-100 mt-4"></div>
+        <div class="row text-center">
+            <div class="col-sm-2 text-left font-weight-normal" style="font-size: 140%;">Discover:</div>
+            <button class="col-sm-2 btn btn-info rounded-pill shadow mr-auto" onclick="location.href='/topten'">Top rated</button>
+            <button class="col-sm-2 btn btn-info rounded-pill shadow mr-auto" onclick="location.href='/albums'">Albums</button>
+            <button class="col-sm-1 btn btn-info rounded-pill shadow mr-auto" onclick="location.href='/genres'">Genres</button>
+            <button class="col-sm-2 btn btn-info rounded-pill shadow mr-auto" onclick="location.href='/tracks'">All tracks</button>
+            <button class="col-sm-1 btn btn-info rounded-pill shadow mr-auto" onclick="location.href='/artists'">Artists</button>
+        </div>
+        <div class="row w-100 mt-5"></div>
+        <div class="row-col mt-5 text-center">
+            <a href="#"><i class="fab fa-twitter text-info"></i></a>
+            <a href="#"><i class="fab fa-github-alt text-info"></i></a>
+            <a href="#"><i class="fab fa-instagram text-info"></i></a>
+        </div>
+        <div class="row-col text-center">© 2020 Aleph. All rights reserved.</div>
+    </div>
+  </div>
+</div>
+
+</body>
+<script>
+    $(document).ready(function(){
+        let queryString = new URLSearchParams(document.location.search.substring(1));
+        if (queryString.has('contributed')){
+            $('.alert').find('.h5').html('Thank you for contributing!')
+            $('.alert').show();
+        }
+    })
+    $('[name=search]').on('click', function(){
+        let search = $('[name=value]').val()
+        if(search !== ''){
+            window.location.href='/tracks?search='+search;
+        }
+    })
+</script>
+</html>

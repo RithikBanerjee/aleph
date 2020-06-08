@@ -1,0 +1,77 @@
+{% load static %}
+
+<html>
+<title>Top 10</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="{% static 'icon/favicon.jpg' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/common.css' %}" type="text/css">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/all.min.js' %}"></script>
+<script src="{% static 'js/common.js' %}"></script>
+<body class="common-background">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info  fixed-top">
+        <a class="navbar-brand ml-5 mr-5" href="/">Aleph</a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link ml-4 active" href="/topten">Top 10</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/tracks">Tracks</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/artists">Artists</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/albums">Albums</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/genres">Genres</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="https://rithikbanerjee.github.io/Responsive-Resume">About Aleph</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/contact">Contact Aleph</a></li>
+        </ul>
+        <div class="form-inline mr-5">
+            <input class="form-control btn-outline-dark rounded-pill mr-5" type="search" placeholder="Explore">
+        </div>
+        <button class="btn btn-outline-dark rounded-pill mr-5" onclick="location.href='/contribute'">Contribute</button>
+    </nav>
+
+<div class="container">
+
+  <div class="modal fade" name="modal" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content bg-dark text-light"></div>
+    </div>
+  </div>
+
+  <div class="card border-0 shadow my-5 mx-5" style="background-color: rgba(245, 245, 245, 0.7);">
+
+    <div class="card-body">
+        <div class="alert bg-dark alert-dismissible collapse">
+            <span class="h5 font-weight-light text-light"></span>
+        </div>
+        <div class="p-5">
+            <h1 class="font-weight-light">Top 10 tracks</h1>
+            <p class="lead mb-0 font-weight-normal">Here are the top ten tracks rated by all! Rate your favourites.</p>
+        </div>
+    </div>
+  </div>
+  <div class="card border-0 shadow" style="background-color: rgba(245, 245, 245, 0.7);">
+    <div class="card-body p-5">
+        <div class="row w-100 mb-3"></div>
+        <div name="topten"></div>
+        <div class="row-col mt-5 text-center">
+            <a href="#"><i class="fab fa-twitter text-info"></i></a>
+            <a href="#"><i class="fab fa-github-alt text-info"></i></a>
+            <a href="#"><i class="fab fa-instagram text-info"></i></a>
+        </div>
+        <div class="row-col text-center">© 2020 Aleph. All rights reserved.</div>
+    </div>
+  </div>
+</div>
+</body>
+<script>
+    $(document).ready(function(){
+        let topTen = {{ top10|safe }};
+        let baseURL = '{% static 'songs/' %}';
+        $.each(topTen, function(key, value){
+            $('[name=topten]').append(`<div class='row text-white rounded bg-info mx-auto p-2 mb-1'><h5 class='col-sm-1 font-weight-light align-auto'>#${key+1}</h5><div class='col-sm-2'><h5 class='font-weight-light align-auto' name='track'>${value.name}</h5><h6 class='text-dark font-weight-normal'>${value.artist}</h6></div><div class='col-sm-3 align-auto'><button name='album' class='btn-outline-dark rounded mt-1 ml-1 shadow' onclick="location.href='/tracks?album=${value.album}'">${value.album}</button></div><div class='col-sm-4 align-auto'><audio controls controlsList='nodownload' loop><source type='audio/wav' src='${baseURL}${value.filename}'></audio></div><div class='col-sm-2 font-weight-light align-auto'><a href='${baseURL}${value.filename}' download='${value.filename}'><button class='btn-outline-dark rounded shadow'><i class='fa fa-download'></i></button></a><button class='btn-outline-dark rounded shadow ml-4' name='rate'>${value.rating}/10<i class='fa as fa-poll ml-2'></i></button></div></div>`)
+        })
+        $('[name=rate]').modalRate();
+    })
+</script>
+</html>

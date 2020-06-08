@@ -1,0 +1,159 @@
+{% load static %}
+
+<html>
+<title>Contribute</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="{% static 'icon/favicon.jpg' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/common.css' %}" type="text/css">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/all.min.js' %}"></script>
+<script src="{% static 'js/common.js' %}"></script>
+
+<body class="contribute-background">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info  fixed-top">
+        <a class="navbar-brand ml-5 mr-5" href="/">Aleph</a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link ml-4" href="/topten">Top 10</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/tracks">Tracks</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/artists">Artists</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/albums">Albums</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/genres">Genres</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="https://rithikbanerjee.github.io/Responsive-Resume">About Aleph</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/contact">Contact Aleph</a></li>
+        </ul>
+        <div class="form-inline mr-5">
+            <input class="form-control btn-outline-dark rounded-pill mr-5" type="search" placeholder="Explore">
+        </div>
+        <button class="btn btn-dark rounded-pill mr-5">Contribute</button>
+    </nav>
+
+<div class="container">
+  <div class="card border-0 shadow my-1 mx-5" style="background-color: rgba(245, 245, 245, 0.7);">
+    <div class="card-body p-5">
+        <div class="alert bg-dark alert-dismissible collapse mt-3">
+            <span class="h5 font-weight-light text-light"></span>
+        </div>
+      <h1 class="font-weight-light mt-5">Contribute Track</h1>
+      <p class="lead mb-2 font-weight-normal">Before you contribute, please fill these details about the track </p>
+
+      <div class="row mt-5">
+          <h5 class="col-sm-6 font-weight-light  font-weight-normal">Track name</h5>
+          <input class="col-sm-5 form-control rounded shadow" name="name">
+      </div>
+      <div class="row mt-3">
+          <h5 class="col-sm-6 font-weight-light font-weight-normal">Track artist</h5>
+          <input class="col-sm-5 form-control rounded shadow" name="artist">
+      </div>
+      <div class="row mt-3">
+          <h5 class="col-sm-6 font-weight-light font-weight-normal">Name of the album</h5>
+          <input class="col-sm-5 form-control rounded shadow" name="album">
+      </div>
+      <div class="row mt-3">
+          <h5 class="col-sm-6 font-weight-light font-weight-normal">Genre of the track</h5>
+          <input class="col-sm-5 form-control rounded shadow" name="genre">
+      </div>
+      <div class="row mt-3">
+          <h5 class="col-sm-6 font-weight-light font-weight-normal mr-3">Rate your track (out of 10)</h5>
+          <input type="range" class="col-sm-4 mt-1 custom-range mr-4" name="rating" min="0" max="10" value="10">
+          <label class="text-white text-center ml-3" name="rate">10</label>
+      </div>
+      <div class="row mt-3 mb-5">
+          <h5 class="col-sm-6 font-weight-light font-weight-normal">Upload file (.mp3)</h5>
+          <div class="col-sm-5 custom-file mb-3">
+            <input type="file" class="custom-file-input" id="file" name="file">
+            <label class="custom-file-label" for="file">Upload song file</label>
+           </div>
+      </div>
+      <div class="row text-center">
+          <div class="col-sm-5"></div>
+          <button class="col-sm-2 btn btn-info rounded shadow" name="add">Contribute</button>
+          <div class="col-sm-5"></div>
+      </div>
+
+      <div class="row-col mt-4 text-center">
+          <a href="#"><i class="fab fa-twitter text-info"></i></a>
+          <a href="#"><i class="fab fa-github-alt text-info"></i></a>
+          <a href="#"><i class="fab fa-instagram text-info"></i></a>
+      </div>
+      <div class="row-col text-center">© 2020 Aleph. All rights reserved.</div>
+    </div>
+  </div>
+</div>
+
+</body>
+<script>
+    $.fn.setList = function(library, name){
+        let list = `<datalist id='${name}'>`
+        $.each(library, function(key, value){
+            list=`${list}<option value='${value}'>${value}</option>`
+        })
+        this.html(`${list}</datalist>`)
+        this.attr('list', name)
+    }
+    let artists = {{ artists|safe }}
+    $('[name=artist]').setList(artists.map(a => a.name), 'artists')
+    $('[name=artist]').on('change',function(){
+        let artist = artists.filter(x=>x.name == $('[name=artist]').val())
+        $('[name=album]').setList(artist.length == 0 ? [] : artist[0].albums, 'album')
+    })
+    $('[name=genre]').setList({{ genres|safe }} , 'genres')
+    $('[name=rating]').showPoints('rate');
+    $(".custom-file-input").on("change", function() {
+        $(this).siblings(".custom-file-label").addClass("selected").html($(this).val().split("\\").pop())
+    })
+    $.fn.errorResponse = function(message){
+        $('.alert').find('.h5').html(message)
+        $('.alert').show()
+        return
+    }
+    $('[name=add]').on('click',function(){
+        let message = ''
+        let fileData = new FormData()
+        $.each(['name', 'artist', 'album', 'genre', 'file', 'rating'], function(key, value){
+            let details = $(`[name=${value}]`).val()
+            if(details)
+                fileData.append(value, details)
+            else
+                message = `${message} song ${value},`
+        })
+        if(message != '')
+            return $.fn.errorResponse(`Missing field: ${message.replace(/,\s*$/, " ")}`)
+        if(!fileData.get('file').includes('.mp3'))
+            return $.fn.errorResponse(`Only MP3 format is accepted`)
+        fileData.append('track', $('[name=file]').get(0).files[0]);
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/addTrack',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: fileData,
+            success: function (data) {
+               $('.alert').find('.h5').html(data.response)
+               $('.alert').show()
+               window.setTimeout(function(){ location.reload() }, 20000)
+               window.location.href = '/'
+            },
+            error: function () {
+               $('.alert').find('.h5').html("Unable to submit your contribution! Try again later.")
+               $('.alert').show()
+            }
+        })
+    })
+    $(document).ready(function(){
+        let queryString = new URLSearchParams(document.location.search.substring(1));
+        if (queryString.has('artist')){
+            $('[name=artist]').val(queryString.get('artist'))
+            $('[name=artist]').trigger('change')
+        }
+        $.each(['album','genre'], function(key, value){
+            if (queryString.has(value))
+                $(`[name=${value}]`).val(queryString.get(value))
+        })
+    })
+</script>
+</html>

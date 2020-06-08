@@ -1,0 +1,74 @@
+{% load static %}
+
+<html>
+<title>Albums</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="{% static 'icon/favicon.jpg' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/common.css' %}" type="text/css">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/all.min.js' %}"></script>
+<script src="{% static 'js/common.js' %}"></script>
+
+<body class="common-background">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info  fixed-top">
+        <a class="navbar-brand ml-5 mr-5" href="/">Aleph</a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link ml-4" href="/topten">Top 10</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/tracks">Tracks</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/artists">Artists</a></li>
+            <li class="nav-item"><a class="nav-link ml-4 active" href="/albums">Albums</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/genres">Genres</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="https://rithikbanerjee.github.io/Responsive-Resume">About Aleph</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/contact">Contact Aleph</a></li>
+        </ul>
+        <div class="form-inline mr-5">
+            <input class="form-control btn-outline-dark rounded-pill mr-5" type="search" placeholder="Explore">
+        </div>
+        <button class="btn btn-outline-dark rounded-pill mr-5" onclick="location.href='/contribute'">Contribute</button>
+    </nav>
+
+<div class="container">
+  <div class="card border-0 shadow my-5 mx-5" style="background-color: rgba(245, 245, 245, 0.7);">
+    <div class="card-body p-5">
+      <h1 class="font-weight-light">Explore Albums</h1>
+
+        <div class="row">
+            <div class="col-sm-4 lead mt-1 font-weight-normal"> Couldn't find your album? Find: </div>
+            <input class="col-sm-5 form-control rounded-pill mr-5 shadow" type="search" placeholder="Find album" name="find">
+            <button class="col-sm-2 btn btn-outline-dark rounded-pill my-2 my-sm-0 shadow" onclick="location.href='/contribute'">Contribute Album</button>
+        </div>
+    </div>
+  </div>
+  <div class="card border-0 shadow" style="background-color: rgba(245, 245, 245, 0.7);">
+    <div class="card-body p-5">
+        <div class="row w-100 mb-3"></div>
+        <div name="albums"></div>
+        <div class="row-col mt-5 text-center">
+            <a href="#"><i class="fab fa-twitter text-info"></i></a>
+            <a href="#"><i class="fab fa-github-alt text-info"></i></a>
+            <a href="#"><i class="fab fa-instagram text-info"></i></a>
+        </div>
+        <div class="row-col text-center">© 2020 Aleph. All rights reserved.</div>
+    </div>
+  </div>
+</div>
+</body>
+<script>
+    $(document).ready(function(){
+        let albums = {{ albums|safe }}
+        $.fn.setAlbums(albums)
+        $('[name=find]').on('input',function(){
+            $.fn.setAlbums(albums.filter(x=>x.name.toLowerCase().includes($('[name=find]').val().toLowerCase())))
+        })
+    })
+    $.fn.setAlbums = function(library){
+        $.each(library, function(key, value){
+            $('[name=albums]').append(`<div class='row text-white rounded bg-info mx-auto p-2 mb-1'><div class='col-sm-5'><a class='h5 font-weight-light align-auto d-inline'>${value.name}</a><div class='h5 text-dark font-weight-normal d-inline'> by ${value.artist}</div></div><h6 class='col-sm-2 font-weight-light align-auto text-center'>Rating: ${value.rating}/10</h6><h5 class='col-sm-2 font-weight-light text-center'>${value.songs} Songs</h5><div class='col-sm-2'><button class='btn-outline-dark align-auto rounded' onclick="location.href='/tracks?album=${value.name}'"><i class='fa fa-headphones'></i> Listen now</button></div><button class='col-sm-1 align-auto btn-outline-dark rounded shadow' onclick="location.href='/contribute?artist=${value.artist}&album=${value.name}'"><i class='fa fa-plus'></i> Add</button></div>`)
+        })
+    }
+</script>
+</html>

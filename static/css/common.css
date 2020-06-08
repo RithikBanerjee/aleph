@@ -1,0 +1,77 @@
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+.align-auto{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+audio::-webkit-media-controls-enclosure {
+	border-radius: 0rem!important;
+}
+
+audio::-webkit-media-controls-panel {
+	background: #17a2b8;
+	border-color: #343a40;
+}
+
+input::-webkit-calendar-picker-indicator {
+	display: none;
+}
+
+.custom-range::-webkit-slider-thumb {
+  background: #17a2b8;
+}
+
+.modal-dialog {
+    min-height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: auto;
+}
+
+@media(max-width: 768px) {
+  .modal-dialog {
+    min-height: calc(100vh - 20px);
+  }
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.common-background {
+    background: url('../image/common.gif') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+.home-background {
+    background: url('../image/index.gif') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: auto;
+    background-color: #84d7e0;
+    -o-background-size: cover;
+}
+
+.contact-background {
+    background: url('../image/contact.gif') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+.contribute-background {
+    background: url('../image/contribute.gif') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}

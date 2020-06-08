@@ -1,0 +1,80 @@
+{% load static %}
+
+<html>
+<title>Artist</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="{% static 'icon/favicon.jpg' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/common.css' %}" type="text/css">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/all.min.js' %}"></script>
+<script src="{% static 'js/common.js' %}"></script>
+
+<body class="common-background">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info  fixed-top">
+        <a class="navbar-brand ml-5 mr-5" href="/">Aleph</a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link ml-4" href="/topten">Top 10</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/tracks">Tracks</a></li>
+            <li class="nav-item"><a class="nav-link ml-4 active" href="/artists">Artists</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/albums">Albums</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/genres">Genres</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="https://rithikbanerjee.github.io/Responsive-Resume">About Aleph</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/contact">Contact Aleph</a></li>
+        </ul>
+        <div class="form-inline mr-5">
+            <input class="form-control btn-outline-dark rounded-pill mr-5" type="search" placeholder="Explore">
+        </div>
+        <button class="btn btn-outline-dark rounded-pill mr-5" onclick="location.href='/contribute'">Contribute</button>
+    </nav>
+
+<div class="container">
+  <div class="card border-0 shadow my-5 mx-5" style="background-color: rgba(245, 245, 245, 0.7);">
+    <div class="card-body p-5">
+      <h1 class="font-weight-light">Explore Artists</h1>
+
+        <div class="row">
+            <div class="col-sm-4 lead mt-1 font-weight-normal"> Couldn't find your artist? Find: </div>
+            <input class="col-sm-5 form-control rounded-pill mr-5 shadow" type="search" placeholder="Find artist" name="find">
+            <button class="col-sm-2 btn btn-outline-dark rounded-pill my-2 my-sm-0 shadow" onclick="location.href='/contribute'">Contribute Artist</button>
+        </div>
+    </div>
+  </div>
+  <div class="card border-0 shadow" style="background-color: rgba(245, 245, 245, 0.7);">
+    <div class="card-body p-5">
+        <div class="row w-100 mb-3"></div>
+        <div name="artists"></div>
+        <div class="row-col mt-5 text-center">
+            <a href="#"><i class="fab fa-twitter text-info"></i></a>
+            <a href="#"><i class="fab fa-github-alt text-info"></i></a>
+            <a href="#"><i class="fab fa-instagram text-info"></i></a>
+        </div>
+        <div class="row-col text-center">© 2020 Aleph. All rights reserved.</div>
+    </div>
+  </div>
+</div>
+</body>
+<script>
+    $(document).ready(function(){
+        let artists = {{ artists|safe }}
+        $('[name=artists]').setArtists(artists)
+        $('[name=find]').on('input',function(){
+            $('[name=artists]').setArtists(artists.filter(x=>x.name.toLowerCase().includes($('[name=find]').val().toLowerCase())))
+        })
+    })
+    $.fn.setArtists = function(library){
+        let artistRow = ''
+        $.each(library, function(key, value){
+            artistRow = `${artistRow}<div class='row text-white rounded bg-info mx-auto p-2 mb-1'><a class='h5 col-sm-3 text-dark font-weight-normal align-auto' href='/tracks?artist=${value.name}'>${value.name}</a><div class='col-sm-5'>`
+            $.each(value.albums, function(index, name){
+                artistRow = `${artistRow}<button class='btn-outline-dark rounded mt-1 mr-1 shadow' onclick="location.href='/tracks?album=${name}'">${name}</button>`
+            })
+            artistRow = `${artistRow}</div><h6 class='col-sm-2 font-weight-light align-auto'>Rating: ${value.rating}/10</h6><div class='col-sm-2 align-auto'><span class='font-weight-light'>${value.songs} Songs</span><button class='btn-outline-dark rounded shadow ml-3' onclick="location.href='/contribute?artist=${value.name}'"><i class='fa fa-plus'></i> Add</button></div></div>`
+        })
+        this.html(artistRow);
+    }
+</script>
+</html>

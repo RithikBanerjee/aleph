@@ -1,0 +1,79 @@
+{% load static %}
+
+<html>
+<title>Genre</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="{% static 'icon/favicon.jpg' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/common.css' %}" type="text/css">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/all.min.js' %}"></script>
+<script src="{% static 'js/common.js' %}"></script>
+
+<body class="common-background">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info  fixed-top">
+        <a class="navbar-brand ml-5 mr-5" href="/">Aleph</a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link ml-4" href="/topten">Top 10</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/tracks">Tracks</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/artists">Artists</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/albums">Albums</a></li>
+            <li class="nav-item"><a class="nav-link ml-4 active" href="/genres">Genres</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="https://rithikbanerjee.github.io/Responsive-Resume">About Aleph</a></li>
+            <li class="nav-item"><a class="nav-link ml-4" href="/contact">Contact Aleph</a></li>
+        </ul>
+        <div class="form-inline mr-5">
+            <input class="form-control btn-outline-dark rounded-pill mr-5" type="search" placeholder="Explore">
+        </div>
+        <button class="btn btn-outline-dark rounded-pill mr-5" onclick="location.href='/contribute'">Contribute</button>
+    </nav>
+
+<div class="container">
+  <div class="card border-0 shadow my-5 mx-5" style="background-color: rgba(245, 245, 245, 0.7);">
+    <div class="card-body p-5">
+      <h1 class="font-weight-light">Explore Genre</h1>
+
+        <div class="row">
+            <div class="col-sm-4 lead mt-1 font-weight-normal"> Couldn't find your genre? Find: </div>
+            <input class="col-sm-5 form-control rounded-pill mr-5 shadow" type="search" placeholder="Find genre" name="find">
+            <button class="col-sm-2 btn btn-outline-dark rounded-pill my-2 my-sm-0 shadow">Contribute Genre</button>
+        </div>
+    </div>
+  </div>
+  <div class="card border-0 shadow" style="background-color: rgba(245, 245, 245, 0.7);">
+    <div class="card-body p-5">
+        <div class="row w-100 mb-3"></div>
+        <div name="genres"></div>
+        <div class="row-col mt-5 text-center">
+            <a href="#"><i class="fab fa-twitter text-info"></i></a>
+            <a href="#"><i class="fab fa-github-alt text-info"></i></a>
+            <a href="#"><i class="fab fa-instagram text-info"></i></a>
+        </div>
+        <div class="row-col text-center">© 2020 Aleph. All rights reserved.</div>
+    </div>
+  </div>
+</div>
+</body>
+<script>
+    $(document).ready(function(){
+        let genre = {{ genres|safe }}
+        $.fn.setGenre(genre)
+        $('[name=find]').on('input',function(){
+            $.fn.setGenre(genre.filter(x=>x.name.toLowerCase().includes($('[name=find]').val().toLowerCase())))
+        })
+    })
+    $.fn.setGenre = function(library){
+        let genreCard = '<div class="row mt-2">'
+        $.each(library, function(key, value){
+            genreCard = `${genreCard}<div class="col-sm-3 card btn-outline-dark rounded-pill ml-auto mr-auto"><div class="card-body text-center"><h4 class="font-weight-normal">${value.name}</h4><p>${value.songs} Songs</p><button class="btn rounded-pill btn-info mr-3"  onclick="location.href='/tracks?genre=${value.name}'"><i class="fa fa-headphones"></i> Listen</button><button class="btn rounded-pill btn-outline-info" onclick="location.href='/contribute?genre=${value.name}'"><i class="fa fa-plus"></i> Add</button></div></div>`
+            if((key + 1) % 3 === 0){
+                genreCard = `${genreCard}</div><div class="row mt-2">`;
+            }
+        })
+        $('[name=genres]').html(`${genreCard}</div>`);
+    }
+</script>
+</html>
