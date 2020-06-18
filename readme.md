@@ -13,4 +13,7 @@ Install Django 3.0 then open the project in pycharm and type 'python manage.py r
 #### What's the minimum framework needed?
 Python 3.7 & Django 3.0
 
+#### What are most prior features needed?
+Make supportable to all types of files(.flac, .wma, .aac).
+Add a database.
 
