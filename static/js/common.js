@@ -16,7 +16,7 @@ $(document).ready(function(){
 $.fn.modalRate = function(){
     this.on('click',function(){
         let song = $(this.parentNode.parentNode).find('[name=track]').html()
-        $('[name=modal]').find('.modal-content').html(`<div class='modal-header'><h4 class='modal-title font-weight-normal'>Want to rate ${song} ?</h4><button type='button' class='close text-info' data-dismiss='modal'>&times;</button></div><div class='modal-body'><div class='row'><h6 class='col-sm-2 align-auto'>Rate here:</h6><input class='col-sm-6 mt-1 custom-range' type='range' name='rating' min='0' max='10' value='10'><h6 class='col-sm-1 align-auto mr-3' name='points'>10</h6><button class='col-sm-2 btn-info rounded-pill shadow' name='rated'>Submit</button></div></div>`)
+        $('[name=modal]').find('.modal-content').html(`<div class='modal-header'><h4 class='modal-title font-weight-normal'>Cast your vote for track: ${song}?</h4><button type='button' class='close text-info' data-dismiss='modal'>&times;</button></div><div class='modal-body'><div class='row'><h6 class='col-sm-2 align-auto'>Rate here:</h6><input class='col-sm-6 mt-1 custom-range' type='range' name='rating' min='0' max='10' value='10'><h6 class='col-sm-1 align-auto mr-3' name='points'>10</h6><button class='col-sm-2 btn-info rounded-pill shadow' name='rated'>Submit</button></div></div>`)
         $('[name=rating]').showPoints('points')
         $('[name=rated]').on('click', function(){
             $.ajax({

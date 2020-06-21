@@ -26,7 +26,7 @@
             <li class="nav-item"><a class="nav-link ml-4" href="/contact">Contact Aleph</a></li>
         </ul>
         <div class="form-inline mr-5">
-            <input class="form-control btn-outline-dark rounded-pill mr-5" type="search" placeholder="Explore">
+            <input class="form-control btn-outline-dark rounded mr-5" type="search" placeholder="Explore">
         </div>
         <button class="btn btn-outline-dark rounded-pill mr-5" onclick="location.href='/contribute'">Contribute</button>
     </nav>
@@ -68,11 +68,16 @@
     $.fn.setArtists = function(library){
         let artistRow = ''
         $.each(library, function(key, value){
-            artistRow = `${artistRow}<div class='row text-white rounded bg-info mx-auto p-2 mb-1'><a class='h5 col-sm-3 text-dark font-weight-normal align-auto' href='/tracks?artist=${value.name}'>${value.name}</a><div class='col-sm-5'>`
-            $.each(value.albums, function(index, name){
-                artistRow = `${artistRow}<button class='btn-outline-dark rounded mt-1 mr-1 shadow' onclick="location.href='/tracks?album=${name}'">${name}</button>`
+            artistRow = `${artistRow}<div class='row text-white rounded bg-info mx-auto p-2 mb-1'><a class='h5 text-white col-sm-3 font-weight-normal align-auto' href='/tracks?artist=${value.name}'>${value.name}</a><div class='col-sm-2 align-auto text-center'>`;
+
+            $.each(value.genres, function(index, name){
+                artistRow = `${artistRow}<button class='btn-outline-dark rounded-pill mt-1 mr-1 shadow' onclick="location.href='/tracks?genre=${name}'">${name}</button> `;
             })
-            artistRow = `${artistRow}</div><h6 class='col-sm-2 font-weight-light align-auto'>Rating: ${value.rating}/10</h6><div class='col-sm-2 align-auto'><span class='font-weight-light'>${value.songs} Songs</span><button class='btn-outline-dark rounded shadow ml-3' onclick="location.href='/contribute?artist=${value.name}'"><i class='fa fa-plus'></i> Add</button></div></div>`
+            artistRow = `${artistRow}</div><div class='col-sm-4'>`;
+            $.each(value.albums, function(index, name){
+                artistRow = `${artistRow}<button class='btn-outline-dark rounded mt-1 mr-1 shadow' onclick="location.href='/tracks?artist=${value.name}&album=${name}'">${name}</button>`;
+            })
+            artistRow = `${artistRow}</div><h5 class='col-sm-2 font-weight-light align-auto'>Rating: ${value.rating}/10 </h5><button class='col-sm-1 col-sm-1 align-auto btn-outline-dark rounded shadow' onclick="location.href='/contribute?artist=${value.name}'"><i class='fa fa-plus'></i> Add</button></div>`;
         })
         this.html(artistRow);
     }

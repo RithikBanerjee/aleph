@@ -26,7 +26,7 @@
             <li class="nav-item"><a class="nav-link ml-4" href="/contact">Contact Aleph</a></li>
         </ul>
         <div class="form-inline mr-5">
-            <input class="form-control btn-outline-dark rounded-pill mr-5" type="search" placeholder="Explore">
+            <input class="form-control btn-outline-dark rounded mr-5" type="search" placeholder="Explore">
         </div>
         <button class="btn btn-outline-dark rounded-pill mr-5" onclick="location.href='/contribute'">Contribute</button>
     </nav>
@@ -66,9 +66,11 @@
         })
     })
     $.fn.setAlbums = function(library){
+        let albumRow = '';
         $.each(library, function(key, value){
-            $('[name=albums]').append(`<div class='row text-white rounded bg-info mx-auto p-2 mb-1'><div class='col-sm-5'><a class='h5 font-weight-light align-auto d-inline'>${value.name}</a><div class='h5 text-dark font-weight-normal d-inline'> by ${value.artist}</div></div><h6 class='col-sm-2 font-weight-light align-auto text-center'>Rating: ${value.rating}/10</h6><h5 class='col-sm-2 font-weight-light text-center'>${value.songs} Songs</h5><div class='col-sm-2'><button class='btn-outline-dark align-auto rounded' onclick="location.href='/tracks?album=${value.name}'"><i class='fa fa-headphones'></i> Listen now</button></div><button class='col-sm-1 align-auto btn-outline-dark rounded shadow' onclick="location.href='/contribute?artist=${value.artist}&album=${value.name}'"><i class='fa fa-plus'></i> Add</button></div>`)
+            albumRow = `${albumRow}<div class='row text-white rounded bg-info mx-auto p-2 mb-1'><div class="col-sm-5"><button class='btn-outline-dark rounded mt-1 mr-1 shadow' onclick="location.href='/tracks?artist=${value.name}&album=${value.name}'">${value.name}</button><a class='h5 font-weight-normal d-inline text-white' href='/tracks?artist=${value.artist}'> by ${value.artist}</a></div><div class='col-sm-2 text-center'><button class='btn-outline-dark rounded-pill mt-1 mr-1 shadow' onclick="location.href='/tracks?genre=${value.genre}'">${value.genre}</button></div><a class='col-sm-2 h5 font-weight-light text-center text-white' href='/tracks?artist=${value.name}&album=${value.name}'>${value.songs} tracks</a><h5 class='col-sm-2 font-weight-light align-auto text-center'>Rating: ${value.rating}/10</h5><button class='col-sm-1 align-auto btn-outline-dark rounded shadow' onclick="location.href='/contribute?artist=${value.artist}&album=${value.name}'"><i class='fa fa-plus'></i> Add</button></div>`;
         })
+        $('[name=albums]').html(albumRow);
     }
 </script>
 </html>

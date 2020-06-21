@@ -25,7 +25,7 @@
             <li class="nav-item"><a class="nav-link ml-4" href="/contact">Contact Aleph</a></li>
         </ul>
         <div class="form-inline mr-5">
-            <input class="form-control btn-outline-dark rounded-pill mr-5" type="search" placeholder="Explore">
+            <input class="form-control btn-outline-dark rounded mr-5" type="search" placeholder="Explore">
         </div>
         <button class="btn btn-outline-dark rounded-pill mr-5" onclick="location.href='/contribute'">Contribute</button>
     </nav>
@@ -69,7 +69,7 @@
         let topTen = {{ top10|safe }};
         let baseURL = '{% static 'songs/' %}';
         $.each(topTen, function(key, value){
-            $('[name=topten]').append(`<div class='row text-white rounded bg-info mx-auto p-2 mb-1'><h5 class='col-sm-1 font-weight-light align-auto'>#${key+1}</h5><div class='col-sm-2'><h5 class='font-weight-light align-auto' name='track'>${value.name}</h5><h6 class='text-dark font-weight-normal'>${value.artist}</h6></div><div class='col-sm-3 align-auto'><button name='album' class='btn-outline-dark rounded mt-1 ml-1 shadow' onclick="location.href='/tracks?album=${value.album}'">${value.album}</button></div><div class='col-sm-4 align-auto'><audio controls controlsList='nodownload' loop><source type='audio/wav' src='${baseURL}${value.filename}'></audio></div><div class='col-sm-2 font-weight-light align-auto'><a href='${baseURL}${value.filename}' download='${value.filename}'><button class='btn-outline-dark rounded shadow'><i class='fa fa-download'></i></button></a><button class='btn-outline-dark rounded shadow ml-4' name='rate'>${value.rating}/10<i class='fa as fa-poll ml-2'></i></button></div></div>`)
+            $('[name=topten]').append(`<div class='row text-white rounded bg-info mx-auto p-2 mb-1'><h5 class='col-sm-1 font-weight-light align-auto'>#${key+1}</h5><div class='col-sm-2 mt-1'><h5 class='font-weight-normal align-auto' name='track'>${value.name}</h5><a class='text-dark' href='/tracks?artist=${value.artist}'>${value.artist}</a></div><div class='col-sm-3 align-auto text-center'><button class='btn-outline-dark rounded mt-1 ml-1 shadow' onclick="location.href='/tracks?album=${value.album}'">${value.album}</button></div><div class='col-sm-4 align-auto'><audio controls controlsList='nodownload' loop><source type='audio/wav' src='${baseURL}${value.filename}'></audio></div><div class='col-sm-2 font-weight-light align-auto'><a href='${baseURL}${value.filename}' download='${value.filename}'><button class='btn-outline-dark rounded shadow'><i class='fa fa-download'></i></button></a><button class='btn-outline-dark rounded shadow ml-4' name='rate'>${value.rating}/10<i class='fa as fa-poll ml-2'></i></button></div></div>`)
         })
         $('[name=rate]').modalRate();
     })

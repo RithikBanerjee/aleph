@@ -36,13 +36,15 @@ def artists(request):
     artist = []
     for song in library:
         if not any(x['name'] == song['artist'] for x in artist):
-            artist.append({'name': song['artist'], 'albums': [song['album']], 'rating': song['rating'], "songs": 1})
+            artist.append({'name': song['artist'], 'albums': [song['album']],
+                           'genres': [song['genre']], 'rating': song['rating']})
             continue
         singer = next(x for x in artist if x['name'] == song['artist'])
         if song['album'] not in singer['albums']:
             singer['albums'].append(song['album'])
+        if song['genre'] not in singer['genres']:
+            singer['genres'].append(song['genre'])
         singer['rating'] = round((song['rating'] + singer['rating']) / 2, 2)
-        singer['songs'] += 1
     return render(request, 'artists.html', {'artists': artist})
 
 
@@ -52,7 +54,8 @@ def albums(request):
         if song['album'].lower() == 'single':
             continue
         if not any(x['name'] == song['album'] for x in album):
-            album.append({'name': song['album'], "artist": song['artist'], 'rating': song['rating'], 'songs': 1})
+            album.append({'name': song['album'], 'artist': song['artist'],
+                          'genre': song['genre'], 'rating': song['rating'], 'songs': 1})
             continue
         record = next(x for x in album if x['name'] == song['album'])
         record['rating'] = round((song['rating'] + record['rating']) / 2, 2)
@@ -91,10 +94,12 @@ def genres(request):
     genre = []
     for song in library:
         if not any(x['name'] == song['genre'] for x in genre):
-            genre.append({'name': song['genre'], 'songs': 1})
+            genre.append({'name': song['genre'], 'songs': 1, 'artists': [song['artist']]})
             continue
         record = next(x for x in genre if x['name'] == song['genre'])
         record['songs'] += 1
+        if not any(x == song['artist'] for x in record['artists']):
+            record['artists'].append(song['artist'])
     return render(request, 'genres.html', {'genres': genre})
 
 

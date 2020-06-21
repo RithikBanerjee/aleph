@@ -26,7 +26,7 @@
             <li class="nav-item"><a class="nav-link ml-4" href="/contact">Contact Aleph</a></li>
         </ul>
         <div class="form-inline mr-5">
-            <input class="form-control btn-outline-dark rounded-pill mr-5" type="search" placeholder="Explore">
+            <input class="form-control btn-outline-dark rounded mr-5" type="search" placeholder="Explore">
         </div>
         <button class="btn btn-outline-dark rounded-pill mr-5" onclick="location.href='/contribute'">Contribute</button>
     </nav>
@@ -72,9 +72,14 @@
     $(document).ready(function(){
         let tracks = {{ tracks|safe }};
         let type = {{ type|safe }};
+        if(type['name'].includes('Album: Single')){
+            let artist = new URLSearchParams(document.location.search.substring(1)).get('artist');
+            type['name'] = `Single: ${artist}`;
+            tracks = tracks.filter(x=>x.artist.toLowerCase()===artist.toLowerCase());
+        }
         if(type['name'] !== 'all'){
             $('[name=type]').html(type['name']);
-            $('[name=extra]').html(`<p class="col lead font-weight-normal">${tracks.length} tracks found</p>`);
+            $('[name=extra]').html(`<p class="col lead font-weight-normal">${tracks.length == 0 ? 'No' : tracks.length} tracks found</p>`);
         }
         $('[name=tracks]').setTracks(tracks);
         $('[name=find]').on('input',function(){
@@ -85,7 +90,7 @@
        let trackRow = '';
        let baseURL = '{% static 'songs/' %}';
        $.each(library, function(key, value){
-           trackRow = `${trackRow}<div class='row text-white rounded bg-info mx-auto p-2 mb-1'><div class='col-sm-3'><div class='h5 font-weight-light align-auto' name='track'>${value.name}</div><a class='h6 text-dark font-weight-normal' href='/tracks?artist=${value.artist}'>${value.artist}</a></div><div class='col-sm-3 align-auto'><button onclick="location.href='/tracks?album=${value.album}'" class='btn-outline-dark rounded mt-1 shadow'>${value.album}</button></div><div class='col-sm-4 align-auto'><audio controls controlsList='nodownload'><source type='audio/mpeg' src='${baseURL}${value.filename}'></audio></div><div class='col-sm-2 font-weight-light align-auto'><a href='${baseURL}${value.filename}' download='${value.filename}'><button class='btn-outline-dark rounded shadow'><i class='fa fa-download'></i></button></a><button class='btn-outline-dark rounded shadow ml-4' name='rate'>${value.rating}/10<i class='fa as fa-poll ml-2'></i></button></div></div>`;
+           trackRow = `${trackRow}<div class='row text-white rounded bg-info mx-auto p-2 mb-1'><div class='col-sm-3'><div class='h5 font-weight-normal align-auto' name='track'>${value.name}</div><a class='h6 text-dark font-weight-normal' href='/tracks?artist=${value.artist}'>${value.artist}</a></div><div class='col-sm-3 align-auto'><button onclick="location.href='/tracks?album=${value.album}'" class='btn-outline-dark rounded mt-1 shadow'>${value.album}</button></div><div class='col-sm-4 align-auto'><audio controls controlsList='nodownload'><source type='audio/mpeg' src='${baseURL}${value.filename}'></audio></div><div class='col-sm-2 font-weight-light align-auto'><a href='${baseURL}${value.filename}' download='${value.filename}'><button class='btn-outline-dark rounded shadow'><i class='fa fa-download'></i></button></a><button class='btn-outline-dark rounded shadow ml-4' name='rate'>${value.rating}/10<i class='fa as fa-poll ml-2'></i></button></div></div>`;
        })
        this.html(trackRow);
        $('[name=rate]').modalRate();

@@ -26,7 +26,7 @@
             <li class="nav-item"><a class="nav-link ml-4" href="/contact">Contact Aleph</a></li>
         </ul>
         <div class="form-inline mr-5">
-            <input class="form-control btn-outline-dark rounded-pill mr-5" type="search" placeholder="Explore">
+            <input class="form-control btn-outline-dark rounded mr-5" type="search" placeholder="Explore">
         </div>
         <button class="btn btn-outline-dark rounded-pill mr-5" onclick="location.href='/contribute'">Contribute</button>
     </nav>
@@ -66,14 +66,15 @@
         })
     })
     $.fn.setGenre = function(library){
-        let genreCard = '<div class="row mt-2">'
+        let genreRow = '';
         $.each(library, function(key, value){
-            genreCard = `${genreCard}<div class="col-sm-3 card btn-outline-dark rounded-pill ml-auto mr-auto"><div class="card-body text-center"><h4 class="font-weight-normal">${value.name}</h4><p>${value.songs} Songs</p><button class="btn rounded-pill btn-info mr-3"  onclick="location.href='/tracks?genre=${value.name}'"><i class="fa fa-headphones"></i> Listen</button><button class="btn rounded-pill btn-outline-info" onclick="location.href='/contribute?genre=${value.name}'"><i class="fa fa-plus"></i> Add</button></div></div>`
-            if((key + 1) % 3 === 0){
-                genreCard = `${genreCard}</div><div class="row mt-2">`;
-            }
+            genreRow = `${genreRow}<div class='row text-white rounded bg-info mx-auto p-2 mb-1'><a class='col-sm-2 h5 text-white font-weight-normal align-auto d-inline' href='/tracks?genre=${value.name}'>${value.name}</a><div class='col-sm-7 text-center'>`;
+            $.each(value.artists, function(index, name){
+                genreRow = `${genreRow}<button class='btn-outline-dark rounded-pill mt-1 mr-1 shadow' onclick="location.href='/tracks?artist=${name}'">${name}</button>`;
+            })
+            genreRow = `${genreRow}</div><a class='col-sm-2 h5 align-auto font-weight-light text-white text-center' href='/tracks?genre=${value.name}'>${value.songs} tracks</a><button class='col-sm-1 align-auto btn-outline-dark rounded shadow' onclick="location.href='/contribute?genre=${value.name}'"><i class='fa fa-plus'></i> Add</button></div>`;
         })
-        $('[name=genres]').html(`${genreCard}</div>`);
+        $('[name=genres]').html(genreRow);
     }
 </script>
 </html>
