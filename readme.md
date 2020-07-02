@@ -16,5 +16,3 @@ Python 3.7 & Django 3.0
 #### What are most prior features needed?
 Make supportable to all types of files(.flac, .wma, .aac).
 Add a database.
-
-no comments?
