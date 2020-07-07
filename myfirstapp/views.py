@@ -4,12 +4,13 @@ from django.shortcuts import render
 import json
 import os
 
+#json database at '/static/json/schema.json'
 jsonPath = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'json', 'schema.json'))
 with open(jsonPath) as file:
     library = json.load(file)
     file.close()
 
-
+    
 def write(song):
     if song is not None:
         library.append(song)
