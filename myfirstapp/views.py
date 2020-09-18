@@ -10,29 +10,29 @@ with open(jsonPath) as file:
     library = json.load(file)
     file.close()
 
-    
+#rate song in db    
 def write(song):
     if song is not None:
         library.append(song)
     with open(jsonPath, 'w') as schema:
         json.dump(library, schema)
 
-
+#store new song in db
 def store(track):
     storePath = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'songs', track.name))
     with open(storePath, 'wb+') as destination:
         for chunk in track.chunks():
             destination.write(chunk)
 
-
+#index page
 def index(request):
     return render(request, 'index.html')
 
-
+#contact page
 def contact(request):
     return render(request, 'contact.html')
 
-
+#artists page
 def artists(request):
     artist = []
     for song in library:
@@ -48,7 +48,7 @@ def artists(request):
         singer['rating'] = round((song['rating'] + singer['rating']) / 2, 2)
     return render(request, 'artists.html', {'artists': artist})
 
-
+#albums page
 def albums(request):
     album = []
     for song in library:
@@ -63,7 +63,7 @@ def albums(request):
         record['songs'] += 1
     return render(request, 'albums.html', {'albums': album})
 
-
+#tracks page
 def tracks(request):
     explore = request.GET.get('search')
     if explore is not None:
@@ -82,7 +82,7 @@ def handleType(getRequest, name):
     track = [x for x in library if x[name] == stringType]
     return {'tracks': track, 'type': {'name': f"{name.title()}: {stringType}"}}
 
-
+#search bar
 def search(discover):
     track = []
     explore = discover.lower()
@@ -90,7 +90,7 @@ def search(discover):
         track += [x for x in library if explore in x[stringType].lower()]
     return {'tracks': track, 'type': {'name': f"Search result for {discover}"}}
 
-
+#genres page
 def genres(request):
     genre = []
     for song in library:
@@ -103,12 +103,12 @@ def genres(request):
             record['artists'].append(song['artist'])
     return render(request, 'genres.html', {'genres': genre})
 
-
+#top ten page
 def topTen(request):
     library.sort(reverse=True, key=lambda x: x['rating'])
     return render(request, 'topten.html', {'top10': library[:10]})
 
-
+#contribute page
 def contribute(request):
     artist = []
     for song in library:
